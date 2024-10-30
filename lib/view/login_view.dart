@@ -122,6 +122,12 @@ class _LoginViewState extends State<LoginView> {
                       email: email, password: password);
                   title = 'Login Successful';
                   msg = 'Logged in as $email';
+                  setState(() {
+                    if (mounted) {
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil('/notes', (route) => false);
+                    }
+                  });
                 } on FirebaseAuthException catch (e) {
                   title = e.code.replaceAll('-', ' ');
                   msg = e.message.toString();
@@ -129,13 +135,8 @@ class _LoginViewState extends State<LoginView> {
                   title = 'Unknown Error';
                   msg = e.toString();
                 }
-                _showMyDialog(title, msg).then((_) {
-                  if (mounted) {
-                    setState(() {
-                      Navigator.of(context)
-                          .pushNamedAndRemoveUntil('/notes', (route) => false);
-                    });
-                  }
+                setState(() {
+                  _showMyDialog(title, msg);
                 });
               },
               child: const Text(

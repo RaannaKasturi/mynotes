@@ -125,6 +125,12 @@ class _RegisterViewState extends State<RegisterView> {
                       email: email, password: password);
                   title = 'Account Registered';
                   msg = 'Account created successfully with $email';
+                  setState(() {
+                    if (mounted) {
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil('/notes', (route) => false);
+                    }
+                  });
                 } on FirebaseAuthException catch (e) {
                   title = e.code.replaceAll('-', ' ');
                   msg = e.message.toString();
@@ -132,13 +138,8 @@ class _RegisterViewState extends State<RegisterView> {
                   title = 'Unknown Error';
                   msg = e.toString();
                 }
-                _showMyDialog(title, msg).then((_) {
-                  if (mounted) {
-                    setState(() {
-                      Navigator.of(context)
-                          .pushNamedAndRemoveUntil('/notes', (route) => false);
-                    });
-                  }
+                setState(() {
+                  _showMyDialog(title, msg);
                 });
               },
               child: const Text(

@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-enum MenuAction { logout }
+enum MenuAction { account, logout }
 
 Future<bool> logoutDialog(BuildContext context) {
   return showDialog<bool>(
@@ -61,14 +61,19 @@ class _NotesViewState extends State<NotesView> {
                       });
                     }
                   }
+                  break;
+                case MenuAction.account:
+                  break;
               }
             },
             itemBuilder: (context) {
               return const [
                 PopupMenuItem<MenuAction>(
+                    value: MenuAction.account, child: Text("My Account")),
+                PopupMenuItem<MenuAction>(
                   value: MenuAction.logout,
                   child: Text("Log Out"),
-                )
+                ),
               ];
             },
           )
